@@ -11,7 +11,7 @@ With __*TLMtoBC.js*__ we can:
 * If it will be created the code stop after this but if they need update data the code get the existing BC products data and use the IDs and SKU to update new data to server. 
 
 ### Issues that I'm working on:
-* When I convert the XML from TLM customer to JSON (I don't know why) they treat the register with only one image different than other with 2 or more causing a empty object as result on the first one and this is not allowed on BC. I'm trying to fix it changing the way xml2json package works, in this case trying to set all <photos> tag to be inserted inside an array. 
+* When I convert the XML from TLM customer to JSON (I don't know why) they treat the register with only one image different than other with 2 or more causing a empty object as result on the first one and this is not allowed on BC. I'm trying to fix it changing the way xml2json package works, in this case trying to set all \<photos\> tag to be inserted inside an array. 
 My next ster is fix it to finish completely the test. 
 
 
