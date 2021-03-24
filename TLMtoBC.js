@@ -67,18 +67,16 @@ function TLMdataToBC(arg) {
             let images = jsonData[key].photos.photo
             if (images) {
                 Object.keys(images).forEach(key => {
-                    if (key == '[' || key == ']' || key == 'nr' || key == '$t') {
-                        const img = {
-                            image_url: 'https://www.statistics.sl/images/StatisticsSL/teams/noimage.png',
-                            is_thumbnail: true
-                        }
-                        imagesOK.push(img)
-                    } else {
-                        for (let i in key) {
-                            const img = { image_url: images[key].$t, is_thumbnail: true }
+                    const keyN = Number(key)
+                    for (let i in key) {
+                        const multI = images[key].$t
+                        const oneI  = images
+                        if(key !== 'nr' && key !== '$t'){
+                        const img = { image_url: multI, is_thumbnail: true }
                             imagesOK.push(img)
                         }
-                    }
+
+                    } 
                 })
             }
             //here's the schema...
