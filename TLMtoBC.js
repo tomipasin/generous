@@ -66,19 +66,33 @@ function TLMdataToBC(arg) {
             let imagesOK = []
             let images = jsonData[key].photos.photo
             if (images) {
-                Object.keys(images).forEach(key => {
-                    const keyN = Number(key)
-                    for (let i in key) {
-                        const multI = images[key].$t
-                        const oneI  = images
-                        if(key !== 'nr' && key !== '$t'){
-                        const img = { image_url: multI, is_thumbnail: true }
+                console.log(key)
+                for (const chave in images) {
+                    let imgOK = `${images[chave]}`
+                    const img = { image_url: imgOK, is_thumbnail: true }
+                    if (imgOK != '[object Object]' && imgOK != '1') {
+                        if (img != '{ image_url: "1", is_thumbnail: true }') {
+                            //console.log(img)
                             imagesOK.push(img)
                         }
+                    }
+                }
+                Object.keys(images).forEach(key => {
+                    for (let i in key) {
+                        const mto = images[key].$t
+                        const img = { image_url: mto, is_thumbnail: true }
+                        if (mto != undefined) {
+                            //console.log(img)
+                            imagesOK.push(img)
 
-                    } 
+                        }
+                    }
                 })
             }
+
+            console.log(imagesOK)
+
+
             //here's the schema...
             const toUpdate = {
                 data: {
