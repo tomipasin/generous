@@ -151,12 +151,11 @@ function TLMdataToBC(arg) {
             updateBCfromTLM(BC_id, data)
         });
     }
-    //and the PUT function...
+    //and the PUT function:
     function updateBCfromTLM(id, data) {
-        const ID = id;
         let options = {
             method: 'PUT',
-            url: `https://api.bigcommerce.com/stores/${process.env.STORE}/v3/catalog/products/${ID}`,
+            url: `https://api.bigcommerce.com/stores/${process.env.STORE}/v3/catalog/products/${id}`,
             headers: {
                 accept: 'application/json',
                 'content-type': 'application/json',
@@ -178,6 +177,3 @@ function TLMdataToBC(arg) {
 
 //and comment this one... ;-)
 TLMdataToBC();
-
-
-
