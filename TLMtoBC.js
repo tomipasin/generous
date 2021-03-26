@@ -72,7 +72,6 @@ function TLMdataToBC(arg) {
                     const img = { image_url: imgOK, is_thumbnail: true }
                     if (imgOK != '[object Object]' && imgOK != '1') {
                         if (img != '{ image_url: "1", is_thumbnail: true }') {
-                            //console.log(img)
                             imagesOK.push(img)
                         }
                     }
@@ -82,17 +81,13 @@ function TLMdataToBC(arg) {
                         const mto = images[key].$t
                         const img = { image_url: mto, is_thumbnail: true }
                         if (mto != undefined) {
-                            //console.log(img)
                             imagesOK.push(img)
 
                         }
                     }
                 })
             }
-
             console.log(imagesOK)
-
-
             //here's the schema...
             const toUpdate = {
                 data: {
@@ -110,37 +105,33 @@ function TLMdataToBC(arg) {
             }
             //all set so let's create the products in BC store.
             createProduct(toUpdate.data)
-
         })
     }
-
-    //The function to create...
+    //Step 3 - create or update the products in BC store.
     function createProduct(data) {
-        let dataFromSchema = data
         var options = {
             method: 'POST',
             url: `https://api.bigcommerce.com/stores/${process.env.STORE}/v3/catalog/products`,
             headers: {
-              'content-type': 'application/json',
-              accept: 'application/json',
-              'x-auth-token': `${process.env.TOKEN}`
+                'content-type': 'application/json',
+                accept: 'application/json',
+                'x-auth-token': `${process.env.TOKEN}`
             },
             body: data,
             json: true
-          };
-          //Using request I can check if the server's response are OK the products are created on store, 
-          //no errors and the code finish here. 
-          //But if I have a conflict response (code 409) it means that the product already exists and
-          //we need proceed the update.
-          request(options, function (error, response, body) {
+        };
+        //Using request I can check the server's response. If is OK the product is already created on store.
+        //If has no errors the code stop here but if I have a conflict response (code 409) it means that the 
+        //product already exists and it need to be updated, so the code go ahead with this.
+        request(options, function (error, response, body) {
             if (error) throw new Error(error);
             console.log(response.statusCode)
-            if(response.statusCode === 409){
+            if (response.statusCode === 409) {
                 getDataFromBCBySKU(data.sku, data)
-            }else{
+            } else {
                 return;
             }
-          });
+        });
     }
     //My function to get BC data with IDs using the SKU as a kind of indexer. 
     function getDataFromBCBySKU(sku, data) {
@@ -174,7 +165,6 @@ function TLMdataToBC(arg) {
             body: data,
             json: true
         };
-
         request(options, function (error, response, body) {
             if (error) throw new Error(error);
             console.log(body)
@@ -183,7 +173,6 @@ function TLMdataToBC(arg) {
 }
 //to this "update" from customer's store occurs every 24h (86400 seconds) please
 //uncoment the line below.
-
 
 //setTimeout(TLMdataToBC, 86400000);
 
