@@ -181,7 +181,6 @@ function TLMdataToBC(arg) {
             });
         }
     }
-
 }
 //to this "update" from customer's store occurs every 24h (86400 seconds) please
 //uncoment the line below.
