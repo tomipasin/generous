@@ -109,7 +109,7 @@ function TLMdataToBC(arg) {
     }
     //Step 3 - create or update the products in BC store.
     function createProduct(data) {
-        var options = {
+        let options = {
             method: 'POST',
             url: `https://api.bigcommerce.com/stores/${process.env.STORE}/v3/catalog/products`,
             headers: {
@@ -133,7 +133,7 @@ function TLMdataToBC(arg) {
             }
         });
     }
-    //My function to get BC data with IDs using the SKU as a kind of indexer. 
+    //Here's my function to get BC data with IDs using the SKU as a kind of indexer. 
     function getDataFromBCBySKU(sku, data) {
         const skuNumber = sku;
         let options = {
@@ -151,7 +151,7 @@ function TLMdataToBC(arg) {
             updateBCfromTLM(BC_id, data)
         });
     }
-    //this is a simples PUT function...
+    //and the PUT function...
     function updateBCfromTLM(id, data) {
         const ID = id;
         let options = {
