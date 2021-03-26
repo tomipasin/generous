@@ -9,7 +9,7 @@ With __*TLMtoBC.js*__ we can:
 * Create a data sctructure to use when create and update data. 
 * Checking if the product may be created or updated and acting according this.
 * If it will be created the code stop after this but if they need update data the code get the existing BC products data and use the IDs and SKU to update new data to server. 
-* In this example the customer has 24 products without image so we already treat the data to fit the BC requirements.
+* In this example the customer has 24 products without image, others with no price, stock or weight, so we already treat the data to fit the BC requirements.
 
 ### Questions?
 * email: tomipasin@gmail.com 
