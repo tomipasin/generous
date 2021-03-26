@@ -1,4 +1,4 @@
-# Generous Test
+# Generous
 
 ### Objective:
 Write a webservice in Node JS capable of get information from customer by XML and upload it to BigCommerce platform, checking if the product need to be created or updated.
