@@ -9,7 +9,7 @@ fs = require('fs');
 
 // Step 1 - get XML from TLM server and convert it to JSON:
 function TLMdataToBC(arg) {
-    let req = https.get("https://tlm-bc-functions.netlify.app/artikelen.xml", function (res) {
+    let req = https.get(`${process.env.XML_SOURCE}`, function (res) {
         let data = '';
         res.on('data', function (stream) {
             data += stream;
@@ -19,6 +19,7 @@ function TLMdataToBC(arg) {
                 if (error === null) {
                     console.log(data)
                     let json = parser2JSON.toJson(data);
+                    console.log((json))
                     createProductSchema(json)
                 }
                 else {
@@ -87,7 +88,7 @@ function TLMdataToBC(arg) {
                     }
                 })
             }
-            console.log(imagesOK)
+            
             //here's the schema...
             const toUpdate = {
                 data: {
@@ -104,6 +105,7 @@ function TLMdataToBC(arg) {
                 }
             }
             //all set so let's create the products in BC store.
+            console.log(toUpdate.data)
             createProduct(toUpdate.data)
         })
     }
