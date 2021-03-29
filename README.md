@@ -16,7 +16,20 @@ With __*TLMtoBC.js*__ we can:
 2. All dependences you need are in package.json, so run `npm i` and all of them will be installed.
 3. You need create and fill the __.env__ file with your Big Commerce credentials. Store this file on the project's root. 
 This repository has a __.env_Template__ to help you with this. 
-4. Run `node TLMtoBC.js` to start the process. 
+4. Run `npm start` to start the process. 
+
+P.S: If this code will be executed once time a day please these instructions below on __*TLMtoBC.js*__ :
+
+```javascript
+//to this "update" from customer's store occurs every 24h (86400 seconds) please
+//uncoment the line below.
+
+//setTimeout(TLMdataToBC, 86400000);
+
+//and comment this one... ;-)
+TLMdataToBC();
+
+```
 
 ### Questions?
 * email: tomipasin@gmail.com 
