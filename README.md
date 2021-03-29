@@ -11,6 +11,13 @@ With __*TLMtoBC.js*__ we can:
 * If it will be created the code stop after this but if they need update data the code get the existing BC products data and use the IDs and SKU to update new data to server. 
 * In this example the customer has 24 products without image, others with no price, stock or weight, so we already treat the data to fit the BC requirements.
 
+### How can you test locally?
+1. Clone this repository;
+2. All dependences you need are in package.json, so run `npm i` and all of them will be installed.
+3. You need create and fill the __.env__ file with your Big Commerce credentials. Store this file on the project's root. 
+This repository has a __.env_Template__ to help you with this. 
+4. Run `node TLMtoBC.js` to start the process. 
+
 ### Questions?
 * email: tomipasin@gmail.com 
 * Telegram: @tomipasin
