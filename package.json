@@ -4,37 +4,19 @@
   "description": "Test to Generous.",
   "main": "TLMtoBC.js",
   "scripts": {
-    "start": "nodemon TLMtoBC.js",
+    "start": "node TLMtoBC.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "@octokit/auth-basic": "^1.4.8",
-    "@octokit/rest": "^18.3.5",
-    "arg": "^5.0.0",
-    "axios": "^0.21.1",
-    "chalk": "^4.1.0",
-    "clear": "^0.1.0",
-    "clui": "^0.3.6",
-    "configstore": "^5.0.1",
-    "deepmerge": "^4.2.2",
+    "dependencies": {
     "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "figlet": "^1.5.0",
-    "inquirer": "^8.0.0",
-    "lodash": "^4.17.21",
-    "merge-json": "0.1.0-b.3",
-    "minimist": "^1.2.5",
-    "node-fetch": "^2.6.1",
-    "nodemon": "^2.0.7",
     "request": "^2.88.2",
     "simple-git": "^2.37.0",
     "touch": "^3.1.0",
     "xml2js": "^0.4.23",
     "xml2json": "^0.12.0",
-    "xmlhttprequest": "^1.8.0",
-    "yargs": "^13.2.4"
+    "xmlhttprequest": "^1.8.0"
   }
 }

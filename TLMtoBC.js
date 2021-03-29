@@ -1,10 +1,9 @@
-const https = require('https');
-const xml2js = require('xml2js');
+let https = require('https');
+let xml2js = require('xml2js');
 let parser2JSON = require('xml2json');
-const parser = new xml2js.Parser({ attrkey: "ATTR" });
-let http = require("https");
+let parser = new xml2js.Parser({ attrkey: "ATTR" });
 let request = require("request");
-const { number } = require('yargs');
+
 require('dotenv').config({ path: '.env' })
 fs = require('fs');
 
