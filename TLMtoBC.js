@@ -156,9 +156,9 @@ function TLMdataToBC(arg) {
                 let xml = body;
                 let json = JSON.parse(parser2JSON.toJson(xml));
                 let BC_id = json.products.product.id;
-                console.log(json)
+                let jsonDataOK = data
                 //with BC Ids I call the function thar properly get the data and update the BC store. 
-                updateBCfromTLM(BC_id, json)
+                updateBCfromTLM(BC_id, jsonDataOK)
             });
         }
         //this is a simples PUT function...
