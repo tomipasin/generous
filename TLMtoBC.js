@@ -156,9 +156,61 @@ function TLMdataToBC(arg) {
                 let xml = body;
                 let json = JSON.parse(parser2JSON.toJson(xml));
                 let BC_id = json.products.product.id;
-                let jsonDataOK = data
-                //with BC Ids I call the function thar properly get the data and update the BC store. 
-                updateBCfromTLM(BC_id, jsonDataOK)
+                //one schema to update with images
+                let jsonDataOK = {
+                    id: BC_id,
+                    sku: data.sku,
+                    name: data.name,
+                    inventory_level: data.inventory_level,
+                    inventory_tracking: "product",
+                    description: data.description,
+                    price: data.price,
+                    type: data.type,
+                    images: data.images
+                }
+                //and another without images to update
+                let jsonDataNoImageOK = {
+                    id: BC_id,
+                    sku: data.sku,
+                    name: data.name,
+                    inventory_level: data.inventory_level,
+                    inventory_tracking: "product",
+                    description: data.description,
+                    price: data.price,
+                    type: data.type
+                }
+                console.log(json)
+               
+                //here we will check how many images each product have on BC
+                let optionsImage = {
+                    method: 'GET',
+                    url: `https://api.bigcommerce.com/stores/${process.env.STORE}/v3/catalog/products/${BC_id}/images`,
+                    headers: {
+                      accept: 'application/json',
+                      'content-type': 'application/json',
+                      'x-auth-token': `${process.env.TOKEN}`
+                    }
+                  };
+                  request(optionsImage, function (error, response, body) {
+                    if (error) throw new Error(error);
+                    let bodyRaw = body;
+                    let jsonI = JSON.parse(bodyRaw);
+                    //let's check both images array length
+                    let sourceImages = jsonDataOK.images.length;
+                    let BCImages = jsonI.data.length;
+                    console.log(`Data: ${jsonDataOK.images.length}`)
+                    console.log(`BC: ${jsonI.data.length}`);
+                    //and let's set a conditional to check if the number of images on BC is lower than
+                    //our source images quantity.
+                    //if BC has less images than our source we update images
+                    if (BCImages < sourceImages){
+                        updateBCfromTLM(BC_id, jsonDataOK)
+                     //else we update anything except the images.   
+                    }else{
+                        updateBCfromTLM(BC_id, jsonDataNoImageOK)
+                    }
+                  });
+                 
             });
         }
         //this is a simples PUT function...
