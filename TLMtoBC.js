@@ -49,7 +49,6 @@ function TLMdataToBC(arg) {
                     priceOK = parseFloat(priceConv.toString().replace(/\./g, ',').replace(',', '.'))
                 }
             }
-            let cat = jsonData[key].artikelgroep
             let category = jsonData[key].artikelgroep_id
             if (category != 23) {
                 category = [23]
@@ -64,7 +63,6 @@ function TLMdataToBC(arg) {
             } else {
                 weight = 0
             }
-
             let imagesOK = []
             let images = jsonData[key].photos.photo
             if (images) {
@@ -194,12 +192,14 @@ function TLMdataToBC(arg) {
                     //let's check both images array length
                     let sourceImages = jsonDataOK.images.length;
                     let BCImages = jsonI.data.length;
-                    //here we get the image(s) id from BC
+                    //and here we get the image(s) id from BC
                     let BC_Images = jsonI.data;
                     //if the BC product has no images the code will perform a complete update.
                     if (BCImages === 0) {
                         updateBCfromTLM(BC_id, jsonDataOK)
                     }
+                    //now we get each image ID that belongs to each ID and, with a conditional, 
+                    //check if the update will contain images or not.
                     for (const chave in BC_Images) {
                         let idImage = (BC_Images[chave].id)
                         //our conditional is here to check if BC product has less images than XML source
@@ -214,21 +214,17 @@ function TLMdataToBC(arg) {
                                     'x-auth-token': `${process.env.TOKEN}`
                                 }
                             };
-
                             request(options, function (error, response, body) {
                                 if (error) throw new Error(error);
-
                                 console.log(body);
                                 updateBCfromTLM(BC_id, jsonDataOK)
                             });
-                            //if the number of images in BC and source match we will update only the other fields. 
+                        //if the number of images in BC and source match we will update only the other fields. 
                         } else {
                             updateBCfromTLM(BC_id, jsonDataNoImageOK)
                         }
-
                         console.log(idImage)
                     }
-
                     console.log(`Data: ${jsonDataOK.images.length}`)
                     console.log(`BC: ${jsonI.data.length}`);
                 });
