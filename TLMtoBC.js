@@ -17,9 +17,6 @@ function TLMdataToBC(arg) {
         res.on('end', function () {
             parser.parseString(data, function (error, result) {
                 if (error === null) {
-                    var opt = {
-                        arrayNotation: ['photos', '/photos'],
-                    };
                     let json = parser2JSON.toJson(data);
                     console.log((json))
                     createProductSchema(json)
@@ -76,7 +73,6 @@ function TLMdataToBC(arg) {
                     const img = { image_url: imgOK, is_thumbnail: true }
                     if (imgOK != '[object Object]' && imgOK != '1') {
                         if (img != '{ image_url: "1", is_thumbnail: true }') {
-                            //console.log(img)
                             imagesOK.push(img)
                         }
                     }
@@ -86,7 +82,6 @@ function TLMdataToBC(arg) {
                         const mto = images[key].$t
                         const img = { image_url: mto, is_thumbnail: true }
                         if (mto != undefined) {
-                            //console.log(img)
                             imagesOK.push(img)
 
                         }
@@ -156,6 +151,7 @@ function TLMdataToBC(arg) {
                 let xml = body;
                 let json = JSON.parse(parser2JSON.toJson(xml));
                 let BC_id = json.products.product.id;
+
                 //one schema to update with images
                 let jsonDataOK = {
                     id: BC_id,
@@ -180,37 +176,62 @@ function TLMdataToBC(arg) {
                     type: data.type
                 }
                 console.log(json)
-               
+
                 //here we will check how many images each product have on BC
                 let optionsImage = {
                     method: 'GET',
                     url: `https://api.bigcommerce.com/stores/${process.env.STORE}/v3/catalog/products/${BC_id}/images`,
                     headers: {
-                      accept: 'application/json',
-                      'content-type': 'application/json',
-                      'x-auth-token': `${process.env.TOKEN}`
+                        accept: 'application/json',
+                        'content-type': 'application/json',
+                        'x-auth-token': `${process.env.TOKEN}`
                     }
-                  };
-                  request(optionsImage, function (error, response, body) {
+                };
+                request(optionsImage, function (error, response, body) {
                     if (error) throw new Error(error);
                     let bodyRaw = body;
                     let jsonI = JSON.parse(bodyRaw);
                     //let's check both images array length
                     let sourceImages = jsonDataOK.images.length;
                     let BCImages = jsonI.data.length;
+                    //here we get the image(s) id from BC
+                    let BC_Images = jsonI.data;
+                    //if the BC product has no images the code will perform a complete update.
+                    if (BCImages === 0) {
+                        updateBCfromTLM(BC_id, jsonDataOK)
+                    }
+                    for (const chave in BC_Images) {
+                        let idImage = (BC_Images[chave].id)
+                        //our conditional is here to check if BC product has less images than XML source
+                        //this code will delete all images and call for an update of images to product.
+                        if (BCImages < sourceImages) {
+                            var options = {
+                                method: 'DELETE',
+                                url: `https://api.bigcommerce.com/stores/${process.env.STORE}/v3/catalog/products/${BC_id}/images/${idImage}`,
+                                headers: {
+                                    accept: 'application/json',
+                                    'content-type': 'application/json',
+                                    'x-auth-token': `${process.env.TOKEN}`
+                                }
+                            };
+
+                            request(options, function (error, response, body) {
+                                if (error) throw new Error(error);
+
+                                console.log(body);
+                                updateBCfromTLM(BC_id, jsonDataOK)
+                            });
+                            //if the number of images in BC and source match we will update only the other fields. 
+                        } else {
+                            updateBCfromTLM(BC_id, jsonDataNoImageOK)
+                        }
+
+                        console.log(idImage)
+                    }
+
                     console.log(`Data: ${jsonDataOK.images.length}`)
                     console.log(`BC: ${jsonI.data.length}`);
-                    //and let's set a conditional to check if the number of images on BC is lower than
-                    //our source images quantity.
-                    //if BC has less images than our source we update images
-                    if (BCImages < sourceImages){
-                        updateBCfromTLM(BC_id, jsonDataOK)
-                     //else we update anything except the images.   
-                    }else{
-                        updateBCfromTLM(BC_id, jsonDataNoImageOK)
-                    }
-                  });
-                 
+                });
             });
         }
         //this is a simples PUT function...
